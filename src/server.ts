@@ -7,7 +7,6 @@ import http from 'node:http';
 import { pathToFileURL } from 'node:url';
 import { executeQuery } from './index.js';
 import { executeCalculated } from './calculated.js';
-import type { CalculatedRequest } from './calculated-types.js';
 
 const MAX_BODY_BYTES = 1_000_000;
 
@@ -46,7 +45,7 @@ export function createServer(): http.Server {
           sendJson(res, 400, { ok: false, errors: ['request body is not valid JSON'] });
           return;
         }
-        const result = req.url === '/execute-calculated' ? executeCalculated(body as CalculatedRequest) : executeQuery(body);
+        const result = req.url === '/execute-calculated' ? executeCalculated(body) : executeQuery(body);
         sendJson(res, result.ok ? 200 : 422, result);
       });
       return;
